@@ -36,7 +36,15 @@ public class SudokuSolver {
         }
 
         // create the list of sets for each row (this.rows)
-        // ...
+        this.rows = new ArrayList();
+        for(int row = 0; row< N; row++){
+            Set set = new HashSet();
+            for(int col = 0; col<N; col++){
+                set.add(this.grid[row][col]);
+            }
+            this.rows.add(set);
+
+        }
 
         // create the list of sets for each col (this.cols)
         // ...
