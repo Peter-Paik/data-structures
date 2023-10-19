@@ -16,31 +16,9 @@ public class Grid
         int count = 1;
         while(coords.size()>0){
             Pair spot = coords.pop();
-            pixels[spot.getColumn()][spot.getRow()] = count;
-            count++;
-            //north
-            if(spot.getRow()+1<SIZE){
-                if(pixels[spot.getColumn()][spot.getRow()+1]==0){
-                    coords.push(new Pair(spot.getColumn(),spot.getRow()+1));
-                }
-            }
-            //east
-            if(spot.getColumn()+1<SIZE){
-                if(pixels[spot.getColumn()+1][spot.getRow()]==0){
-                    coords.push(new Pair(spot.getColumn()+1,spot.getRow()));
-                }
-            }
-            //south
-            if(spot.getRow()-1>=0){
-                if(pixels[spot.getColumn()][spot.getRow()+1]==0){
-                    coords.push(new Pair(spot.getColumn(),spot.getRow()+1));
-                }
-            }
-            //west
-            if(spot.getColumn()+1<SIZE){
-                if(pixels[spot.getColumn()][spot.getRow()+1]==0){
-                    coords.push(new Pair(spot.getColumn(),spot.getRow()+1));
-                }
+            if((spot.getColumn()>=0 && spot.getColumn()<SIZE && spot.getRow()>=0 && spot.getRow()<SIZE) && pixels[spot.getColumn()][spot.getRow()]==0){
+                pixels[spot.getColumn()][spot.getRow()] = count;
+                count++;
             }
         }
     }
