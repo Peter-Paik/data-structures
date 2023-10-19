@@ -16,11 +16,22 @@ public class Grid
         int count = 1;
         while(coords.size()>0){
             Pair spot = coords.pop();
-            if((spot.getColumn()>=0 && spot.getColumn()<SIZE && spot.getRow()>=0 && spot.getRow()<SIZE) && pixels[spot.getColumn()][spot.getRow()]==0){
-                pixels[spot.getColumn()][spot.getRow()] = count;
+            if((spot.getColumn()>=0 && spot.getColumn()<SIZE && spot.getRow()>=0 && spot.getRow() <SIZE) && pixels[spot.getRow()][spot.getColumn()] ==0){
+                pixels[spot.getRow()][spot.getColumn()] = count;
                 count++;
+
+                //add south east north west
+                coords.push(new Pair(spot.getRow()-1,spot.getColumn()));
+                coords.push(new Pair(spot.getRow(),spot.getColumn()+1));
+                coords.push(new Pair(spot.getRow()+1,spot.getColumn()));
+                coords.push(new Pair(spot.getRow(),spot.getColumn()-1));
+                
+                
+                
             }
+            //else do nothing, the spot is popped off already
         }
+    
     }
 
     @Override
