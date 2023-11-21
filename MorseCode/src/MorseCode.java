@@ -24,7 +24,7 @@ public class MorseCode
         codeMap = new TreeMap<Character, String>();
         decodeTree = new TreeNode(' ', null, null);  // autoboxing
         // put a space in the root of the decoding tree
-        addSymbol('A', ".-");
+        addSymbol('A', ".-"); 
         addSymbol('B', "-...");
         addSymbol('C', "-.-.");
         addSymbol('D', "-..");
@@ -73,7 +73,6 @@ public class MorseCode
     {
         codeMap.put(letter, code);
         treeInsert(letter, code);
-
     }
 
     /**
@@ -88,18 +87,18 @@ public class MorseCode
         TreeNode current = decodeTree;
 
         for(int i = 0; i<code.length(); i++){
-            System.out.println("ran");
             if(code.charAt(i) == DOT){
-                current.setLeft(new TreeNode(" "));
+                if(current.getLeft() == null)
+                    current.setLeft(new TreeNode(" "));
                 current = current.getLeft();
             }
             else if (code.charAt(i) == DASH){ //"_"
-                current.setRight(new TreeNode(" "));
+                if(current.getRight() == null)
+                    current.setRight(new TreeNode(" "));
                 current = current.getRight();
             }
         }
         current.setValue(letter);
-        System.out.println("run");
     }
 
     /**
@@ -111,11 +110,9 @@ public class MorseCode
     public static String encode(String text)
     {
         StringBuffer morse = new StringBuffer(400);
-        for(int i = 0; i<text.length()-1; i++){
+        for(int i = 0; i<text.length(); i++){
 
-            if(text.charAt(i) == ' ')
-                morse.append(" ");
-            else{
+            if(text.charAt(i) != ' '){//if it is a space, do nothing so ultimately adding two spaces instead of 3
                 morse.append(codeMap.get(Character.toUpperCase(text.charAt(i))));
             }
             morse.append(" "); //add space between letters
@@ -133,11 +130,19 @@ public class MorseCode
     {
         StringBuffer text = new StringBuffer(100);
         int index= 0;
-        while(index <= morse.length()){
+        while(morse.length()>0){
+            if(morse.charAt(0) == ' '){ //next one is a space
+                text.append(" ");
+                morse = morse.substring(1);
+            }
+            
             index = morse.indexOf(" ");
+            if(index == -1)
+                index = morse.length();
+
             TreeNode current = decodeTree;
             for(int i = 0; i< index; i++){
-                if(morse.substring(i,i+1) == "."){
+                if(morse.charAt(i) == DOT){
                     if(current.getLeft() != null)
                         current = current.getLeft();
                 }
@@ -148,11 +153,8 @@ public class MorseCode
             }
             text.append(current.getValue());
 
-            morse = morse.substring(index+1);
-            if(morse.indexOf(" ") == 0){ //next one is a space
-                text.append(" ");
+            if(index < morse.length())
                 morse = morse.substring(index+1);
-            }
         }
 
         return text.toString();
