@@ -15,6 +15,7 @@ public class MorseCode
     {
         MorseCode.start();
         System.out.println(MorseCode.encode("Watson come here"));
+        System.out.println(MorseCode.decode(MorseCode.encode("Watson come here")));
         BTreePrinter.printNode(decodeTree);
     }
 
@@ -85,18 +86,20 @@ public class MorseCode
     private static void treeInsert(char letter, String code)
     {
         TreeNode current = decodeTree;
-        if(decodeTree == null){
-            decodeTree = new TreeNode(letter);
-            return;
-        }
-        for(int i = 0; i<code.length()-1; i++){
-            if(code.substring(i,i+1).equals("."))
+
+        for(int i = 0; i<code.length(); i++){
+            System.out.println("ran");
+            if(code.charAt(i) == DOT){
+                current.setLeft(new TreeNode(" "));
                 current = current.getLeft();
-            else // "_"
+            }
+            else if (code.charAt(i) == DASH){ //"_"
+                current.setRight(new TreeNode(" "));
                 current = current.getRight();
-            if(current == null)
-                current = new TreeNode(letter);
+            }
         }
+        current.setValue(letter);
+        System.out.println("run");
     }
 
     /**
@@ -115,6 +118,7 @@ public class MorseCode
             else{
                 morse.append(codeMap.get(Character.toUpperCase(text.charAt(i))));
             }
+            morse.append(" "); //add space between letters
         }
         return morse.toString();
     }
@@ -128,7 +132,6 @@ public class MorseCode
     public static String decode(String morse)
     {
         StringBuffer text = new StringBuffer(100);
-
         int index= 0;
         while(index <= morse.length()){
             index = morse.indexOf(" ");
@@ -148,8 +151,8 @@ public class MorseCode
             morse = morse.substring(index+1);
             if(morse.indexOf(" ") == 0){ //next one is a space
                 text.append(" ");
+                morse = morse.substring(index+1);
             }
-            index++;
         }
 
         return text.toString();
